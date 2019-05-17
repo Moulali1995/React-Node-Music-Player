@@ -1,13 +1,10 @@
 var express = require('express')
 var fs = require('fs')
 var path = require('path')
-var bodyParser = require('body-parser')
 var app = express()
 var cors = require('cors')
-app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cors())
 app.use(express.json())
-app.use(bodyParser.json())
 app.use(express.static(__dirname + '/music'))
 app.use('/public', express.static(__dirname + '/public'))
 /** Implementing Simple Music Server using Express JS **/

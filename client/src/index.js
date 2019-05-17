@@ -33,6 +33,7 @@ class App extends React.Component {
     this.showPlaylist = this.showPlaylist.bind(this)
     this.savePlaylist = this.savePlaylist.bind(this)
     this.deletePlaylist = this.deletePlaylist.bind(this)
+    this.togglePlaylist = this.togglePlaylist.bind(this)
   }
 
   previous () {
@@ -92,15 +93,21 @@ class App extends React.Component {
       }
     }
   }
+  togglePlaylist () {
+    if (this.state.showPlaylistflag) {
+      this.setState({ showPlaylistflag: false })
+    } else {
+      this.setState({ showPlaylistflag: true })
+    }
+    if (!this.state.playlistexists) {
+      window.alert('No playlist exists')
+      this.setState({ showPlaylistflag: false })
+    }
+  }
   showPlaylist () {
     if (!this.state.playlistexists) {
       this.addtoPlaylist()
     }
-    // if (this.state.showPlaylistflag) {
-    //   this.setState({ showPlaylistflag: false })
-    // } else {
-    //   this.setState({ showPlaylistflag: true })
-    // }
     var showPlaylistlocal = this.state.playlistSongs.map((song, index) => {
       return (
         <div key={index}>
@@ -153,6 +160,7 @@ class App extends React.Component {
           this.setState({ playlistexists: false })
         } else {
           this.setState({ playlist: res.data.playlist, playlistSongs: res.data.savedSongs, playlistexists: true })
+          this.showPlaylist()
         }
       }
     ).catch(error => window.alert('Some error occurred' + error))
@@ -187,13 +195,13 @@ class App extends React.Component {
                 {this.state.songs}
 
                 <br /><br />
-                <button onClick={this.showPlaylist}>Playlists</button>
+                <button onClick={this.togglePlaylist}>Playlists</button>
                 <br /><br />
                 <b>{this.state.showPlaylistflag && this.state.playlist}</b>
                 &nbsp;&nbsp;
-                {this.state.playlistexists &&
+                {this.state.showPlaylistflag &&
                 <button onClick={this.savePlaylist}>Save Playlist</button>}
-                {this.state.playlistexists &&
+                {this.state.showPlaylistflag &&
                 <button onClick={this.deletePlaylist}>delete Playlist</button>
                 }
                 {this.state.showPlaylistflag && this.state.showPlaylistSongsjsx}
